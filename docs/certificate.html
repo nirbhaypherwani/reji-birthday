@@ -296,19 +296,21 @@
     }
 
     .cert-qr {
-      width: 60px;
-      height: 60px;
-      border: 1px solid rgba(232, 113, 58, 0.2);
-      border-radius: 6px;
+      width: 100px;
+      height: 100px;
+      background: #ffffff;
+      border: 3px solid var(--claude-orange);
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
+      padding: 6px;
     }
 
-    .cert-qr img, .cert-qr canvas {
-      width: 56px;
-      height: 56px;
+    .cert-qr canvas {
+      width: 84px !important;
+      height: 84px !important;
     }
 
     .cert-footer-text {
@@ -317,16 +319,9 @@
 
     .cert-footer-label {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.55rem;
+      font-size: 0.6rem;
       color: var(--text-muted);
       letter-spacing: 0.1em;
-    }
-
-    .cert-footer-url {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.6rem;
-      color: var(--claude-orange);
-      opacity: 0.8;
     }
 
     .cert-serial {
@@ -398,8 +393,7 @@
           <canvas id="qrCanvas"></canvas>
         </div>
         <div class="cert-footer-text">
-          <div class="cert-footer-label">YOUR GIFT IS HIDING HERE</div>
-          <div class="cert-footer-url">nirbhaypherwani.github.io/reji-birthday</div>
+          <div class="cert-footer-label">SCAN TO FIND YOUR GIFT</div>
         </div>
       </div>
 
@@ -411,13 +405,13 @@
   <script>
     const qrCanvas = document.getElementById('qrCanvas');
     QRCode.toCanvas(qrCanvas, 'https://nirbhaypherwani.github.io/reji-birthday/', {
-      width: 56,
-      margin: 0,
+      width: 84,
+      margin: 1,
       color: {
-        dark: '#E8713A',
-        light: '#1e1e1e'
+        dark: '#1a1a1a',
+        light: '#ffffff'
       },
-      errorCorrectionLevel: 'M'
+      errorCorrectionLevel: 'H'
     });
   </script>
 </body>
