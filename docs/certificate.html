@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Birthday Certificate -- Reji</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap');
+
+    :root {
+      --claude-orange: #E8713A;
+      --claude-orange-light: #F0915E;
+      --claude-orange-dark: #C85E2E;
+      --bg: #1a1a1a;
+      --bg-card: #1e1e1e;
+      --bg-inner: #222222;
+      --text-primary: #f0ece4;
+      --text-secondary: #a8a29e;
+      --text-muted: #6b6560;
+      --border-glow: rgba(232, 113, 58, 0.4);
+      --gold-accent: #d4a853;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 1rem;
+    }
+
+    @page {
+      size: 11in 8.5in landscape;
+      margin: 0;
+    }
+
+    @media print {
+      body {
+        background: var(--bg) !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+        padding: 0;
+      }
+      .no-print { display: none !important; }
+      .certificate {
+        box-shadow: none !important;
+        margin: 0 !important;
+        page-break-inside: avoid;
+        width: 100vw !important;
+        height: 100vh !important;
+      }
+    }
+
+    .print-controls {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      display: flex;
+      gap: 0.75rem;
+      z-index: 100;
+    }
+
+    .print-btn {
+      padding: 0.6rem 1.5rem;
+      background: var(--claude-orange);
+      color: var(--bg);
+      border: none;
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .print-btn:hover { background: var(--claude-orange-light); transform: translateY(-1px); }
+
+    .certificate {
+      width: 11in;
+      height: 8.5in;
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Ornamental border */
+    .cert-border-outer {
+      position: absolute;
+      inset: 12px;
+      border: 2px solid var(--claude-orange);
+      border-radius: 4px;
+      opacity: 0.6;
+    }
+
+    .cert-border-inner {
+      position: absolute;
+      inset: 20px;
+      border: 1px solid rgba(232, 113, 58, 0.25);
+      border-radius: 2px;
+    }
+
+    /* Corner ornaments */
+    .corner {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      opacity: 0.5;
+    }
+
+    .corner::before, .corner::after {
+      content: '';
+      position: absolute;
+      background: var(--claude-orange);
+    }
+
+    .corner-tl { top: 28px; left: 28px; }
+    .corner-tr { top: 28px; right: 28px; transform: scaleX(-1); }
+    .corner-bl { bottom: 28px; left: 28px; transform: scaleY(-1); }
+    .corner-br { bottom: 28px; right: 28px; transform: scale(-1, -1); }
+
+    .corner::before { width: 30px; height: 1px; top: 0; left: 0; }
+    .corner::after { width: 1px; height: 30px; top: 0; left: 0; }
+
+    /* Subtle pattern overlay */
+    .cert-pattern {
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 20% 30%, rgba(232, 113, 58, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(232, 113, 58, 0.03) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    /* Content */
+    .cert-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      max-width: 8in;
+      padding: 0 0.5in;
+    }
+
+    .cert-overline {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--claude-orange);
+      margin-bottom: 0.3rem;
+      opacity: 0.8;
+    }
+
+    .cert-divider-top {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .cert-divider-top .line {
+      width: 80px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--claude-orange), transparent);
+    }
+
+    .cert-divider-top .diamond {
+      width: 6px;
+      height: 6px;
+      background: var(--claude-orange);
+      transform: rotate(45deg);
+    }
+
+    .cert-label {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 0.15rem;
+    }
+
+    .cert-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: var(--claude-orange);
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.01em;
+    }
+
+    .cert-subtitle {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.8rem;
+    }
+
+    .cert-rule {
+      width: 200px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--claude-orange), transparent);
+      margin: 0 auto 0.8rem;
+    }
+
+    .cert-presented {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.3rem;
+    }
+
+    .cert-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--claude-orange) 20%, var(--claude-orange-light) 50%, var(--gold-accent) 80%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.6rem;
+      letter-spacing: -0.01em;
+    }
+
+    .cert-reason {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 6in;
+      margin: 0 auto 0.7rem;
+    }
+
+    .cert-gift-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      background: var(--bg-inner);
+      border: 1px solid rgba(232, 113, 58, 0.3);
+      border-radius: 10px;
+      padding: 0.6rem 1.5rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .cert-gift-icon {
+      font-family: 'Inter', sans-serif;
+      font-weight: 900;
+      font-size: 1.1rem;
+      color: var(--claude-orange);
+    }
+
+    .cert-gift-detail {
+      text-align: left;
+    }
+
+    .cert-gift-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .cert-gift-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--claude-orange);
+    }
+
+    .cert-gift-sep {
+      width: 1px;
+      height: 30px;
+      background: rgba(232, 113, 58, 0.2);
+    }
+
+    .cert-quote {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .cert-quote::before { content: '\201C'; color: var(--claude-orange); font-size: 1.2rem; }
+    .cert-quote::after { content: '\201D'; color: var(--claude-orange); font-size: 1.2rem; }
+
+    .cert-signatures {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .cert-sig {
+      text-align: center;
+    }
+
+    .cert-sig-name {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.3rem;
+      color: var(--claude-orange-light);
+      margin-bottom: 0.15rem;
+    }
+
+    .cert-sig-line {
+      width: 120px;
+      height: 1px;
+      background: rgba(232, 113, 58, 0.3);
+      margin: 0 auto 0.25rem;
+    }
+
+    .cert-sig-label {
+      font-size: 0.55rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .cert-footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.2rem;
+      margin-top: 0.4rem;
+    }
+
+    .cert-qr {
+      width: 60px;
+      height: 60px;
+      border: 1px solid rgba(232, 113, 58, 0.2);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .cert-qr img, .cert-qr canvas {
+      width: 56px;
+      height: 56px;
+    }
+
+    .cert-footer-text {
+      text-align: left;
+    }
+
+    .cert-footer-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.55rem;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+    }
+
+    .cert-footer-url {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--claude-orange);
+      opacity: 0.8;
+    }
+
+    .cert-serial {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.5rem;
+      color: var(--text-muted);
+      opacity: 0.4;
+      margin-top: 0.4rem;
+      letter-spacing: 0.1em;
+    }
+  </style>
+</head>
+<body>
+  <div class="print-controls no-print">
+    <button class="print-btn" onclick="window.print()">Print / Save as PDF</button>
+  </div>
+
+  <div class="certificate">
+    <div class="cert-border-outer"></div>
+    <div class="cert-border-inner"></div>
+    <div class="corner corner-tl"></div>
+    <div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div>
+    <div class="corner corner-br"></div>
+    <div class="cert-pattern"></div>
+
+    <div class="cert-content">
+      <div class="cert-overline">Anthropic Certified Gift</div>
+
+      <div class="cert-divider-top">
+        <div class="line"></div>
+        <div class="diamond"></div>
+        <div class="line"></div>
+      </div>
+
+      <div class="cert-label">Certificate of</div>
+      <h1 class="cert-title">Infinite Potential<br/>(Unshipped)</h1>
+      <p class="cert-subtitle">Awarded in recognition of outstanding ambition and questionable follow-through</p>
+
+      <div class="cert-rule"></div>
+
+      <div class="cert-presented">Presented with great affection to</div>
+      <h2 class="cert-name">Reji</h2>
+
+      <p class="cert-reason">
+        For years of passionate project ideation, masterful git init ceremonies,
+        and the unmatched ability to architect solutions in conversations
+        that never quite make it to a pull request.
+        Your potential remains -- as always -- fully unreleased.
+      </p>
+
+      <div class="cert-gift-box">
+        <div class="cert-gift-icon">Claude</div>
+        <div class="cert-gift-sep"></div>
+        <div class="cert-gift-detail">
+          <div class="cert-gift-label">Subscription</div>
+          <div class="cert-gift-value">Max Plan</div>
+        </div>
+        <div class="cert-gift-sep"></div>
+        <div class="cert-gift-detail">
+          <div class="cert-gift-label">Value</div>
+          <div class="cert-gift-value">$200</div>
+        </div>
+        <div class="cert-gift-sep"></div>
+        <div class="cert-gift-detail">
+          <div class="cert-gift-label">Purpose</div>
+          <div class="cert-gift-value">Ship Something</div>
+        </div>
+      </div>
+
+      <p class="cert-quote">Not all things are digital, but the best gifts come with a build command.</p>
+
+      <div class="cert-signatures">
+        <div class="cert-sig">
+          <div class="cert-sig-name">Aditi</div>
+          <div class="cert-sig-line"></div>
+          <div class="cert-sig-label">Chief Enabler</div>
+        </div>
+        <div class="cert-sig">
+          <div class="cert-sig-name">Nirbhay</div>
+          <div class="cert-sig-line"></div>
+          <div class="cert-sig-label">Lead Instigator</div>
+        </div>
+      </div>
+
+      <div class="cert-footer">
+        <div class="cert-qr" id="qrContainer">
+          <canvas id="qrCanvas"></canvas>
+        </div>
+        <div class="cert-footer-text">
+          <div class="cert-footer-label">SCAN FOR A SURPRISE</div>
+          <div class="cert-footer-url">nirbhaypherwani.github.io/reji-birthday</div>
+        </div>
+      </div>
+
+      <div class="cert-serial">CERT-REJI-2026-HBD-CLAUDE-MAX</div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
+  <script>
+    const qrCanvas = document.getElementById('qrCanvas');
+    QRCode.toCanvas(qrCanvas, 'https://nirbhaypherwani.github.io/reji-birthday/', {
+      width: 56,
+      margin: 0,
+      color: {
+        dark: '#E8713A',
+        light: '#1e1e1e'
+      },
+      errorCorrectionLevel: 'M'
+    });
+  </script>
+</body>
+</html>

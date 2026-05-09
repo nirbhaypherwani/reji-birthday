@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday, Reji</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%231a1a1a' width='100' height='100' rx='20'/><text y='72' x='50' text-anchor='middle' font-size='60' fill='%23E8713A'>?</text></svg>" />
+  <meta property="og:title" content="You Have a Mission, Reji." />
+  <meta property="og:description" content="Something is waiting for you. Solve the clues. Unlock the gift." />
+  <meta name="theme-color" content="#E8713A" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+    :root {
+      --claude-orange: #E8713A;
+      --claude-orange-light: #F0915E;
+      --claude-orange-glow: rgba(232, 113, 58, 0.3);
+      --claude-orange-subtle: rgba(232, 113, 58, 0.08);
+      --bg-primary: #1a1a1a;
+      --bg-secondary: #242424;
+      --bg-tertiary: #2e2e2e;
+      --bg-card: #1e1e1e;
+      --text-primary: #f0ece4;
+      --text-secondary: #a8a29e;
+      --text-muted: #6b6560;
+      --border: rgba(232, 113, 58, 0.15);
+      --border-strong: rgba(232, 113, 58, 0.35);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .scene {
+      display: none;
+      min-height: 100vh;
+      position: relative;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    .scene.active { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes glowPulse {
+      0%, 100% { box-shadow: 0 0 20px var(--claude-orange-glow); }
+      50% { box-shadow: 0 0 40px var(--claude-orange-glow), 0 0 60px rgba(232, 113, 58, 0.15); }
+    }
+
+    @keyframes typeWriter {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+
+    @keyframes blink {
+      0%, 100% { border-color: var(--claude-orange); }
+      50% { border-color: transparent; }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+
+    @keyframes revealLine {
+      from { opacity: 0; transform: translateX(-20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes terminalBlink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0); opacity: 0; }
+      60% { transform: scale(1.15); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes borderGlow {
+      0%, 100% { border-color: rgba(232, 113, 58, 0.2); }
+      50% { border-color: rgba(232, 113, 58, 0.6); }
+    }
+
+    /* ---- SCENE 0: LANDING ---- */
+    .landing-container {
+      text-align: center;
+      padding: 2rem;
+      max-width: 600px;
+    }
+
+    .landing-badge {
+      display: inline-block;
+      padding: 0.4rem 1.2rem;
+      border: 1px solid var(--border-strong);
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--claude-orange);
+      margin-bottom: 2rem;
+      background: var(--claude-orange-subtle);
+    }
+
+    .landing-title {
+      font-size: clamp(2.5rem, 8vw, 4.5rem);
+      font-weight: 900;
+      line-height: 1.05;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, var(--claude-orange) 0%, var(--claude-orange-light) 50%, var(--text-primary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .landing-subtitle {
+      font-size: 1.15rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 3rem;
+      font-weight: 300;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 2.5rem;
+      background: var(--claude-orange);
+      color: var(--bg-primary);
+      border: none;
+      border-radius: 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      letter-spacing: 0.02em;
+      animation: glowPulse 3s ease-in-out infinite;
+    }
+
+    .btn-primary:hover {
+      background: var(--claude-orange-light);
+      transform: translateY(-2px);
+    }
+
+    .btn-primary .arrow {
+      transition: transform 0.3s ease;
+    }
+
+    .btn-primary:hover .arrow { transform: translateX(4px); }
+
+    /* ---- SCENE 1: TERMINAL RIDDLE ---- */
+    .terminal-wrapper {
+      width: 90%;
+      max-width: 700px;
+      padding: 2rem;
+    }
+
+    .terminal {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    }
+
+    .terminal-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      background: var(--bg-tertiary);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .terminal-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .terminal-dot.red { background: #ff5f57; }
+    .terminal-dot.yellow { background: #febc2e; }
+    .terminal-dot.green { background: #28c840; }
+
+    .terminal-title {
+      flex: 1;
+      text-align: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .terminal-body {
+      padding: 1.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      line-height: 1.8;
+    }
+
+    .terminal-line {
+      opacity: 0;
+      animation: revealLine 0.4s ease-out forwards;
+    }
+
+    .terminal-line .prompt {
+      color: var(--claude-orange);
+      font-weight: 600;
+    }
+
+    .terminal-line .comment {
+      color: var(--text-muted);
+    }
+
+    .terminal-line .string {
+      color: #a8db8f;
+    }
+
+    .terminal-line .keyword {
+      color: var(--claude-orange-light);
+    }
+
+    .terminal-line .output {
+      color: var(--text-secondary);
+    }
+
+    .cursor-blink {
+      display: inline-block;
+      width: 8px;
+      height: 16px;
+      background: var(--claude-orange);
+      animation: terminalBlink 1s step-end infinite;
+      vertical-align: text-bottom;
+      margin-left: 2px;
+    }
+
+    .riddle-input-area {
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .riddle-input-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .riddle-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--text-primary);
+      outline: none;
+      caret-color: var(--claude-orange);
+    }
+
+    .riddle-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .hint-text {
+      margin-top: 1rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      min-height: 1.2em;
+    }
+
+    .scene-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+
+    /* ---- SCENE 2: CIPHER ---- */
+    .cipher-container {
+      width: 90%;
+      max-width: 650px;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .cipher-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: var(--text-primary);
+    }
+
+    .cipher-desc {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .cipher-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+
+    .cipher-letter {
+      width: 44px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--claude-orange);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .cipher-letter:hover {
+      border-color: var(--claude-orange);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--claude-orange-glow);
+    }
+
+    .cipher-letter.selected {
+      background: var(--claude-orange);
+      color: var(--bg-primary);
+      border-color: var(--claude-orange);
+    }
+
+    .cipher-letter.space {
+      width: 20px;
+      background: transparent;
+      border: none;
+      cursor: default;
+    }
+
+    .cipher-letter.space:hover {
+      transform: none;
+      box-shadow: none;
+    }
+
+    .cipher-answer {
+      display: flex;
+      gap: 4px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+      min-height: 52px;
+      padding: 0.5rem;
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+      align-items: center;
+    }
+
+    .cipher-answer-letter {
+      width: 36px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--claude-orange-subtle);
+      border: 1px solid var(--border-strong);
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--claude-orange);
+      animation: popIn 0.3s ease-out;
+      cursor: pointer;
+    }
+
+    .cipher-answer-letter:hover {
+      background: rgba(232, 113, 58, 0.2);
+    }
+
+    .cipher-answer-space {
+      width: 16px;
+    }
+
+    .btn-secondary {
+      padding: 0.75rem 2rem;
+      background: transparent;
+      color: var(--claude-orange);
+      border: 1px solid var(--border-strong);
+      border-radius: 10px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+      background: var(--claude-orange-subtle);
+      border-color: var(--claude-orange);
+    }
+
+    .btn-secondary:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    .cipher-feedback {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      min-height: 1.2em;
+    }
+
+    /* ---- SCENE 3: MEMORY LANE ---- */
+    .memory-container {
+      width: 90%;
+      max-width: 700px;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .memory-title {
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .memory-subtitle {
+      color: var(--text-secondary);
+      margin-bottom: 2.5rem;
+      font-size: 0.95rem;
+    }
+
+    .memory-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .memory-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .memory-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--claude-orange);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .memory-card:hover::before,
+    .memory-card.flipped::before { opacity: 1; }
+
+    .memory-card:hover {
+      border-color: var(--border-strong);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .memory-card.flipped {
+      border-color: var(--claude-orange);
+    }
+
+    .card-front {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .card-back {
+      display: none;
+      font-size: 0.85rem;
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+
+    .memory-card.flipped .card-front { display: none; }
+    .memory-card.flipped .card-back { display: block; animation: fadeIn 0.4s ease; }
+
+    .memory-counter {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+
+    /* ---- SCENE 4: THE REVEAL ---- */
+    .reveal-container {
+      text-align: center;
+      padding: 2rem;
+      max-width: 700px;
+    }
+
+    .reveal-overline {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--claude-orange);
+      margin-bottom: 1.5rem;
+    }
+
+    .reveal-title {
+      font-size: clamp(2rem, 7vw, 3.5rem);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, var(--claude-orange), var(--claude-orange-light), var(--text-primary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .reveal-gift-card {
+      background: var(--bg-card);
+      border: 2px solid var(--claude-orange);
+      border-radius: 16px;
+      padding: 2.5rem 2rem;
+      margin: 2rem auto;
+      max-width: 480px;
+      position: relative;
+      animation: borderGlow 3s ease-in-out infinite;
+      overflow: hidden;
+    }
+
+    .reveal-gift-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 200%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(232, 113, 58, 0.05), transparent);
+      animation: shimmer 4s ease-in-out infinite;
+    }
+
+    .gift-logo {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--claude-orange);
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .gift-plan {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+    }
+
+    .gift-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--claude-orange);
+      margin-bottom: 0.5rem;
+    }
+
+    .gift-note {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    .reveal-message {
+      margin-top: 2.5rem;
+      padding: 2rem;
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      border-left: 3px solid var(--claude-orange);
+    }
+
+    .reveal-message p {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+
+    .reveal-message p + p {
+      margin-top: 1rem;
+    }
+
+    .reveal-from {
+      margin-top: 2rem;
+      font-weight: 700;
+      color: var(--claude-orange);
+      font-size: 1.1rem;
+    }
+
+    .reveal-tagline {
+      margin-top: 0.5rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .confetti-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    /* ---- PROGRESS BAR ---- */
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: var(--claude-orange);
+      transition: width 0.6s ease;
+      z-index: 50;
+      box-shadow: 0 0 10px var(--claude-orange-glow);
+    }
+
+    /* ---- PARTICLES ---- */
+    .particle-field {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: var(--claude-orange);
+      border-radius: 50%;
+      opacity: 0.15;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    /* ---- RESPONSIVENESS ---- */
+    @media (max-width: 600px) {
+      .cipher-letter { width: 36px; height: 44px; font-size: 1rem; }
+      .cipher-answer-letter { width: 30px; height: 38px; font-size: 0.85rem; }
+      .terminal-body { font-size: 0.75rem; padding: 1rem; }
+      .memory-cards { grid-template-columns: 1fr 1fr; }
+      .reveal-gift-card { padding: 1.5rem 1rem; }
+      .gift-value { font-size: 2.2rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" id="progressBar"></div>
+  <div class="particle-field" id="particleField"></div>
+
+  <!-- SCENE 0: LANDING -->
+  <div class="scene active" id="scene0">
+    <div class="landing-container">
+      <div class="landing-badge">classified transmission</div>
+      <h1 class="landing-title">Something is waiting for you, Reji.</h1>
+      <p class="landing-subtitle">
+        You have been selected for a mission of utmost importance.
+        There are clues to solve, truths to uncover, and a gift at the end
+        that you absolutely do not deserve (but here we are).
+      </p>
+      <button class="btn-primary" onclick="goToScene(1)">
+        Begin the Hunt <span class="arrow">&rarr;</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- SCENE 1: TERMINAL RIDDLE -->
+  <div class="scene" id="scene1">
+    <div class="terminal-wrapper">
+      <div class="scene-label">Clue 01 / 03</div>
+      <div class="terminal">
+        <div class="terminal-header">
+          <div class="terminal-dot red"></div>
+          <div class="terminal-dot yellow"></div>
+          <div class="terminal-dot green"></div>
+          <div class="terminal-title">reji@birthday:~/treasure-hunt</div>
+        </div>
+        <div class="terminal-body" id="terminalBody">
+          <div class="terminal-line" style="animation-delay: 0.2s">
+            <span class="prompt">$</span> <span class="keyword">cat</span> clue_01.txt
+          </div>
+          <div class="terminal-line" style="animation-delay: 0.6s">
+            <span class="comment"># Loading encrypted message...</span>
+          </div>
+          <div class="terminal-line" style="animation-delay: 1s">
+            <span class="output">&nbsp;</span>
+          </div>
+          <div class="terminal-line" style="animation-delay: 1.4s">
+            <span class="string">"I speak without a mouth</span>
+          </div>
+          <div class="terminal-line" style="animation-delay: 1.8s">
+            <span class="string">&nbsp;and hear without ears.</span>
+          </div>
+          <div class="terminal-line" style="animation-delay: 2.2s">
+            <span class="string">&nbsp;I have no body,</span>
+          </div>
+          <div class="terminal-line" style="animation-delay: 2.6s">
+            <span class="string">&nbsp;but I come alive with the wind."</span>
+          </div>
+          <div class="terminal-line" style="animation-delay: 3s">
+            <span class="output">&nbsp;</span>
+          </div>
+          <div class="terminal-line" style="animation-delay: 3.4s">
+            <span class="comment"># What am I? Type your answer below.</span>
+          </div>
+          <div class="terminal-line" style="animation-delay: 3.8s">
+            <span class="comment"># hint: it's also something you rarely</span>
+          </div>
+          <div class="terminal-line" style="animation-delay: 4.2s">
+            <span class="comment"># hear back from after sending a text.</span>
+          </div>
+          <div class="riddle-input-area" style="animation-delay: 4.5s">
+            <div class="riddle-input-row">
+              <span class="prompt">$</span>
+              <input type="text" class="riddle-input" id="riddleInput" placeholder="your_answer" autocomplete="off" autofocus />
+              <span class="cursor-blink"></span>
+            </div>
+            <div class="hint-text" id="riddleHint"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCENE 2: UNSCRAMBLE -->
+  <div class="scene" id="scene2">
+    <div class="cipher-container">
+      <div class="scene-label">Clue 02 / 03</div>
+      <h2 class="cipher-title">Unscramble the Truth</h2>
+      <p class="cipher-desc">
+        Tap the letters in order to form the sentence.
+        A universal truth about developers and their side projects.
+      </p>
+      <div class="cipher-answer" id="cipherAnswer"></div>
+      <div class="cipher-grid" id="cipherGrid"></div>
+      <button class="btn-secondary" id="cipherReset" onclick="resetCipher()">Clear</button>
+      <div class="cipher-feedback" id="cipherFeedback"></div>
+    </div>
+  </div>
+
+  <!-- SCENE 3: MEMORY LANE -->
+  <div class="scene" id="scene3">
+    <div class="memory-container">
+      <div class="scene-label">Clue 03 / 03</div>
+      <h2 class="memory-title">Developer Truths</h2>
+      <p class="memory-subtitle">Flip all cards to unlock the final gate. Each one hits a little too close to home.</p>
+      <div class="memory-counter" id="memoryCounter">0 / 6 revealed</div>
+      <div class="memory-cards" id="memoryCards"></div>
+      <button class="btn-primary" id="memoryNext" style="display:none;" onclick="goToScene(4)">
+        Unlock Your Gift <span class="arrow">&rarr;</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- SCENE 4: THE REVEAL -->
+  <div class="scene" id="scene4">
+    <canvas class="confetti-canvas" id="confettiCanvas"></canvas>
+    <div class="reveal-container">
+      <div class="reveal-overline">Mission Complete</div>
+      <h1 class="reveal-title">Happy Birthday, Reji.</h1>
+
+      <div class="reveal-gift-card">
+        <div class="gift-logo">Claude</div>
+        <div class="gift-plan">Max Subscription</div>
+        <div class="gift-value">$200</div>
+        <div class="gift-note">"Because at least AI will finish your projects."</div>
+      </div>
+
+      <div class="reveal-message">
+        <p>
+          Look, we both know you have a graveyard of half-built side projects,
+          abandoned repos, and README files that just say "TODO". We are not here to judge.
+          (We are, a little.)
+        </p>
+        <p>
+          So here is Claude Max -- the most capable AI model on the planet --
+          to help you actually ship something for once. Or at the very least,
+          to have someone who will listen to your architecture debates at 2 AM
+          without falling asleep.
+        </p>
+        <p>
+          Use it wisely. Build something. Or don't. We will still be here
+          celebrating you either way, because you are brilliant, hilarious,
+          and one of the best humans we know.
+        </p>
+        <p>
+          Not all things are digital -- but this one is, and it comes with
+          infinite patience for your "one more refactor" energy.
+        </p>
+        <div class="reveal-from">With love, Aditi & Nirbhay</div>
+        <div class="reveal-tagline">// compiled with zero warnings and maximum affection</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentScene = 0;
+    const totalScenes = 5;
+
+    function updateProgress() {
+      const pct = (currentScene / (totalScenes - 1)) * 100;
+      document.getElementById('progressBar').style.width = pct + '%';
+    }
+
+    function goToScene(n) {
+      document.getElementById('scene' + currentScene).classList.remove('active');
+      currentScene = n;
+      document.getElementById('scene' + n).classList.add('active');
+      updateProgress();
+      if (n === 1) setTimeout(() => document.getElementById('riddleInput')?.focus(), 500);
+      if (n === 2) initCipher();
+      if (n === 3) initMemory();
+      if (n === 4) launchConfetti();
+    }
+
+    // Particles
+    (function initParticles() {
+      const field = document.getElementById('particleField');
+      for (let i = 0; i < 30; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.top = Math.random() * 100 + '%';
+        p.style.animationDelay = (Math.random() * 6) + 's';
+        p.style.animationDuration = (4 + Math.random() * 4) + 's';
+        p.style.width = p.style.height = (1 + Math.random() * 3) + 'px';
+        field.appendChild(p);
+      }
+    })();
+
+    // SCENE 1: Riddle
+    const riddleInput = document.getElementById('riddleInput');
+    const riddleHint = document.getElementById('riddleHint');
+    let riddleAttempts = 0;
+
+    riddleInput?.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        const ans = this.value.trim().toLowerCase();
+        if (ans === 'echo' || ans === 'an echo') {
+          riddleHint.style.color = '#a8db8f';
+          riddleHint.textContent = '> Correct. Proceeding to next clue...';
+          setTimeout(() => goToScene(2), 1200);
+        } else {
+          riddleAttempts++;
+          const hints = [
+            '> Incorrect. Try again...',
+            '> Still no. Think about sounds bouncing back...',
+            '> Hint: $ echo "hello world"',
+            '> Last hint: It is a command AND a phenomenon. Four letters.'
+          ];
+          riddleHint.style.color = 'var(--claude-orange)';
+          riddleHint.textContent = hints[Math.min(riddleAttempts - 1, hints.length - 1)];
+          this.value = '';
+        }
+      }
+    });
+
+    // SCENE 2: Unscramble
+    const TARGET_PHRASE = "IT WILL SHIP NEXT WEEK";
+    let selectedLetters = [];
+    let cipherLetters = [];
+
+    function initCipher() {
+      const grid = document.getElementById('cipherGrid');
+      const answer = document.getElementById('cipherAnswer');
+      grid.innerHTML = '';
+      answer.innerHTML = '';
+      selectedLetters = [];
+
+      const words = TARGET_PHRASE.split(' ');
+      let allLetters = [];
+      words.forEach((word, wi) => {
+        const letters = word.split('');
+        letters.forEach(l => allLetters.push({ char: l, wordIndex: wi }));
+      });
+
+      // Fisher-Yates shuffle
+      for (let i = allLetters.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [allLetters[i], allLetters[j]] = [allLetters[j], allLetters[i]];
+      }
+
+      cipherLetters = allLetters;
+      allLetters.forEach((item, i) => {
+        const el = document.createElement('div');
+        el.className = 'cipher-letter';
+        el.textContent = item.char;
+        el.dataset.index = i;
+        el.addEventListener('click', () => selectCipherLetter(i, el));
+        grid.appendChild(el);
+      });
+    }
+
+    function selectCipherLetter(index, el) {
+      if (el.classList.contains('selected')) return;
+      el.classList.add('selected');
+      selectedLetters.push({ index, char: cipherLetters[index].char });
+      renderCipherAnswer();
+      checkCipher();
+    }
+
+    function renderCipherAnswer() {
+      const answer = document.getElementById('cipherAnswer');
+      answer.innerHTML = '';
+      const formed = selectedLetters.map(s => s.char).join('');
+
+      let charIndex = 0;
+      const targetWords = TARGET_PHRASE.split(' ');
+      let totalChars = 0;
+
+      targetWords.forEach((word, wi) => {
+        for (let ci = 0; ci < word.length; ci++) {
+          if (totalChars < selectedLetters.length) {
+            const el = document.createElement('div');
+            el.className = 'cipher-answer-letter';
+            el.textContent = selectedLetters[totalChars].char;
+            const idx = totalChars;
+            el.addEventListener('click', () => removeCipherLetter(idx));
+            answer.appendChild(el);
+          }
+          totalChars++;
+        }
+        if (wi < targetWords.length - 1 && totalChars <= selectedLetters.length) {
+          const spacer = document.createElement('div');
+          spacer.className = 'cipher-answer-space';
+          answer.appendChild(spacer);
+        }
+      });
+    }
+
+    function removeCipherLetter(idx) {
+      const removed = selectedLetters.splice(idx, 1)[0];
+      const gridLetters = document.querySelectorAll('.cipher-letter');
+      gridLetters[removed.index].classList.remove('selected');
+      renderCipherAnswer();
+    }
+
+    function resetCipher() {
+      selectedLetters = [];
+      document.querySelectorAll('.cipher-letter').forEach(el => el.classList.remove('selected'));
+      document.getElementById('cipherAnswer').innerHTML = '';
+      document.getElementById('cipherFeedback').textContent = '';
+    }
+
+    function checkCipher() {
+      const formed = selectedLetters.map(s => s.char).join('');
+      const target = TARGET_PHRASE.replace(/ /g, '');
+      const feedback = document.getElementById('cipherFeedback');
+
+      if (formed.length === target.length) {
+        if (formed === target) {
+          feedback.style.color = '#a8db8f';
+          feedback.textContent = 'The most-believed lie in software engineering. Correct.';
+          setTimeout(() => goToScene(3), 1500);
+        } else {
+          feedback.style.color = 'var(--claude-orange)';
+          feedback.textContent = 'Not quite. The biggest lie in software. Try again.';
+          setTimeout(resetCipher, 1000);
+        }
+      }
+    }
+
+    // SCENE 3: Memory cards
+    const memoryData = [
+      { front: 'promise_01.js', back: '"I will add tests after this feature." Narrator: He did not add tests.' },
+      { front: 'config.yaml', back: '"Just one more dependency." The node_modules folder is now a black hole with its own gravitational field.' },
+      { front: 'README.md', back: 'Contents: "TODO: Write README." Committed 847 days ago.' },
+      { front: 'side_project/', back: 'Created with immense enthusiasm on a Friday night. Last commit: that same Friday night.' },
+      { front: '.env.example', back: '"It works on my machine." Spoiler: it does not work on any other machine in the observable universe.' },
+      { front: 'git log --oneline', back: '"fix" "fix again" "actually fix" "ok for real this time" "WHY" "final fix" "final final fix"' }
+    ];
+
+    let flippedCount = 0;
+
+    function initMemory() {
+      const container = document.getElementById('memoryCards');
+      container.innerHTML = '';
+      flippedCount = 0;
+      document.getElementById('memoryCounter').textContent = '0 / 6 revealed';
+      document.getElementById('memoryNext').style.display = 'none';
+
+      memoryData.forEach((item, i) => {
+        const card = document.createElement('div');
+        card.className = 'memory-card';
+        card.innerHTML = `
+          <div class="card-front">${item.front}</div>
+          <div class="card-back">${item.back}</div>
+        `;
+        card.addEventListener('click', () => {
+          if (!card.classList.contains('flipped')) {
+            card.classList.add('flipped');
+            flippedCount++;
+            document.getElementById('memoryCounter').textContent = flippedCount + ' / 6 revealed';
+            if (flippedCount === 6) {
+              document.getElementById('memoryNext').style.display = 'inline-flex';
+              document.getElementById('memoryNext').style.animation = 'popIn 0.5s ease-out';
+            }
+          }
+        });
+        container.appendChild(card);
+      });
+    }
+
+    // SCENE 4: Confetti
+    function launchConfetti() {
+      const canvas = document.getElementById('confettiCanvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const pieces = [];
+      const colors = ['#E8713A', '#F0915E', '#f0ece4', '#a8a29e', '#D4622B', '#F5A873'];
+
+      for (let i = 0; i < 150; i++) {
+        pieces.push({
+          x: Math.random() * canvas.width,
+          y: -20 - Math.random() * 300,
+          w: 4 + Math.random() * 8,
+          h: 4 + Math.random() * 4,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          vy: 1.5 + Math.random() * 3,
+          vx: -1 + Math.random() * 2,
+          rot: Math.random() * 360,
+          rotSpeed: -3 + Math.random() * 6,
+          opacity: 0.7 + Math.random() * 0.3
+        });
+      }
+
+      let frame = 0;
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        pieces.forEach(p => {
+          p.y += p.vy;
+          p.x += p.vx;
+          p.rot += p.rotSpeed;
+          if (frame > 60) p.opacity -= 0.003;
+          if (p.opacity <= 0) return;
+
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate((p.rot * Math.PI) / 180);
+          ctx.globalAlpha = Math.max(0, p.opacity);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+          ctx.restore();
+        });
+        frame++;
+        if (frame < 300) requestAnimationFrame(draw);
+      }
+      draw();
+    }
+
+    window.addEventListener('resize', () => {
+      const canvas = document.getElementById('confettiCanvas');
+      if (canvas) {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+    });
+
+    updateProgress();
+  </script>
+</body>
+</html>
