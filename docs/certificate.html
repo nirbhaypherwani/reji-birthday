@@ -390,8 +390,8 @@
       </div>
 
       <div class="cert-footer">
-        <div class="cert-qr" id="qrContainer">
-          <img id="qrImage" alt="QR" />
+        <div class="cert-qr">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=https%3A%2F%2Fnirbhaypherwani.github.io%2Freji-birthday%2F&color=1a1a1a&bgcolor=ffffff&ecc=H" alt="" />
         </div>
         <div class="cert-footer-text">
           <div class="cert-footer-label">SCAN TO FIND YOUR GIFT</div>
@@ -402,19 +402,5 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
-  <script>
-    QRCode.toDataURL('https://nirbhaypherwani.github.io/reji-birthday/', {
-      width: 256,
-      margin: 1,
-      color: {
-        dark: '#1a1a1a',
-        light: '#ffffff'
-      },
-      errorCorrectionLevel: 'H'
-    }, function(err, url) {
-      document.getElementById('qrImage').src = url;
-    });
-  </script>
 </body>
 </html>
