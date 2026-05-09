@@ -308,9 +308,10 @@
       padding: 6px;
     }
 
-    .cert-qr canvas {
-      width: 84px !important;
-      height: 84px !important;
+    .cert-qr img {
+      width: 88px;
+      height: 88px;
+      display: block;
     }
 
     .cert-footer-text {
@@ -390,7 +391,7 @@
 
       <div class="cert-footer">
         <div class="cert-qr" id="qrContainer">
-          <canvas id="qrCanvas"></canvas>
+          <img id="qrImage" alt="QR" />
         </div>
         <div class="cert-footer-text">
           <div class="cert-footer-label">SCAN TO FIND YOUR GIFT</div>
@@ -403,15 +404,16 @@
 
   <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
   <script>
-    const qrCanvas = document.getElementById('qrCanvas');
-    QRCode.toCanvas(qrCanvas, 'https://nirbhaypherwani.github.io/reji-birthday/', {
-      width: 84,
+    QRCode.toDataURL('https://nirbhaypherwani.github.io/reji-birthday/', {
+      width: 256,
       margin: 1,
       color: {
         dark: '#1a1a1a',
         light: '#ffffff'
       },
       errorCorrectionLevel: 'H'
+    }, function(err, url) {
+      document.getElementById('qrImage').src = url;
     });
   </script>
 </body>
