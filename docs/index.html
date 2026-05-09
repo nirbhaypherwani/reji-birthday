@@ -218,7 +218,14 @@
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.85rem;
       line-height: 1.8;
+      max-height: 70vh;
+      overflow-y: auto;
+      scroll-behavior: smooth;
     }
+
+    .terminal-body::-webkit-scrollbar { width: 4px; }
+    .terminal-body::-webkit-scrollbar-track { background: transparent; }
+    .terminal-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
     .terminal-line {
       opacity: 0;
@@ -440,92 +447,65 @@
       min-height: 1.2em;
     }
 
-    /* ---- SCENE 3: MEMORY LANE ---- */
-    .memory-container {
-      width: 90%;
-      max-width: 700px;
-      padding: 2rem;
-      text-align: center;
-    }
-
-    .memory-title {
-      font-size: 1.8rem;
-      font-weight: 800;
-      margin-bottom: 0.5rem;
-    }
-
-    .memory-subtitle {
-      color: var(--text-secondary);
-      margin-bottom: 2.5rem;
-      font-size: 0.95rem;
-    }
-
-    .memory-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 1rem;
-      margin-bottom: 2.5rem;
-    }
-
-    .memory-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.5rem 1rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      position: relative;
+    /* ---- SCENE 3: PROCRASTINATION DIAGNOSTIC ---- */
+    .diag-progress {
+      width: 100%;
+      height: 3px;
+      background: var(--bg-tertiary);
+      border-radius: 2px;
+      margin-top: 1rem;
       overflow: hidden;
     }
 
-    .memory-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
+    .diag-progress-fill {
+      height: 100%;
+      width: 0%;
       background: var(--claude-orange);
+      border-radius: 2px;
+      transition: width 0.4s ease;
+    }
+
+    .diag-line {
       opacity: 0;
       transition: opacity 0.3s ease;
+      padding: 1px 0;
     }
 
-    .memory-card:hover::before,
-    .memory-card.flipped::before { opacity: 1; }
+    .diag-line.visible { opacity: 1; }
 
-    .memory-card:hover {
-      border-color: var(--border-strong);
-      transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    .diag-bar-container {
+      display: inline-flex;
+      gap: 2px;
+      margin-left: 4px;
     }
 
-    .memory-card.flipped {
-      border-color: var(--claude-orange);
+    .diag-bar-block {
+      display: inline-block;
+      width: 7px;
+      height: 12px;
+      background: var(--bg-tertiary);
+      border-radius: 1px;
+      transition: background 0.15s ease;
     }
 
-    .card-front {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      font-weight: 500;
+    .diag-bar-block.filled { background: var(--claude-orange); }
+    .diag-bar-block.filled.critical { background: #e85454; }
+    .diag-bar-block.filled.warn { background: #e8b33a; }
+    .diag-bar-block.filled.good { background: #a8db8f; }
+
+    .diag-status {
+      display: inline-block;
+      padding: 1px 6px;
+      border-radius: 3px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      margin-left: 6px;
     }
 
-    .card-back {
-      display: none;
-      font-size: 0.85rem;
-      color: var(--text-primary);
-      line-height: 1.5;
-    }
-
-    .memory-card.flipped .card-front { display: none; }
-    .memory-card.flipped .card-back { display: block; animation: fadeIn 0.4s ease; }
-
-    .memory-counter {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      margin-bottom: 1.5rem;
-    }
+    .diag-status.critical { background: rgba(232, 84, 84, 0.15); color: #e85454; }
+    .diag-status.warn { background: rgba(232, 179, 58, 0.15); color: #e8b33a; }
+    .diag-status.good { background: rgba(168, 219, 143, 0.15); color: #a8db8f; }
+    .diag-status.info { background: rgba(232, 113, 58, 0.15); color: var(--claude-orange); }
 
     /* ---- SCENE 4: THE REVEAL ---- */
     .reveal-container {
@@ -688,7 +668,7 @@
       .cipher-letter { width: 36px; height: 44px; font-size: 1rem; }
       .cipher-answer-letter { width: 30px; height: 38px; font-size: 0.85rem; }
       .terminal-body { font-size: 0.75rem; padding: 1rem; }
-      .memory-cards { grid-template-columns: 1fr 1fr; }
+      .diag-bar-block { width: 5px; height: 10px; }
       .reveal-gift-card { padding: 1.5rem 1rem; }
       .gift-value { font-size: 2.2rem; }
     }
@@ -788,17 +768,22 @@
     </div>
   </div>
 
-  <!-- SCENE 3: MEMORY LANE -->
+  <!-- SCENE 3: PROCRASTINATION DIAGNOSTIC -->
   <div class="scene" id="scene3">
-    <div class="memory-container">
+    <div class="terminal-wrapper">
       <div class="scene-label">Clue 03 / 03</div>
-      <h2 class="memory-title">Developer Truths</h2>
-      <p class="memory-subtitle">Flip all cards to unlock the final gate. Each one hits a little too close to home.</p>
-      <div class="memory-counter" id="memoryCounter">0 / 6 revealed</div>
-      <div class="memory-cards" id="memoryCards"></div>
-      <button class="btn-primary" id="memoryNext" style="display:none;" onclick="goToScene(4)">
-        Unlock Your Gift <span class="arrow">&rarr;</span>
-      </button>
+      <div class="terminal">
+        <div class="terminal-header">
+          <div class="terminal-dot red"></div>
+          <div class="terminal-dot yellow"></div>
+          <div class="terminal-dot green"></div>
+          <div class="terminal-title">reji@birthday:~/diagnostic</div>
+        </div>
+        <div class="terminal-body" id="diagBody">
+          <div class="diag-line"><span class="prompt">$</span> <span class="keyword">sudo</span> procrastination-scan --target reji --deep</div>
+          <div class="diag-progress"><div class="diag-progress-fill" id="diagProgress"></div></div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -859,7 +844,7 @@
       updateProgress();
       if (n === 1) setTimeout(() => document.getElementById('riddleInput')?.focus(), 500);
       if (n === 2) initCipher();
-      if (n === 3) initMemory();
+      if (n === 3) initDiagnostic();
       if (n === 4) launchConfetti();
     }
 
@@ -1010,45 +995,115 @@
       }
     }
 
-    // SCENE 3: Memory cards
-    const memoryData = [
-      { front: 'promise_01.js', back: '"I will add tests after this feature." Narrator: He did not add tests.' },
-      { front: 'config.yaml', back: '"Just one more dependency." The node_modules folder is now a black hole with its own gravitational field.' },
-      { front: 'README.md', back: 'Contents: "TODO: Write README." Committed 847 days ago.' },
-      { front: 'side_project/', back: 'Created with immense enthusiasm on a Friday night. Last commit: that same Friday night.' },
-      { front: '.env.example', back: '"It works on my machine." Spoiler: it does not work on any other machine in the observable universe.' },
-      { front: 'git log --oneline', back: '"fix" "fix again" "actually fix" "ok for real this time" "WHY" "final fix" "final final fix"' }
-    ];
+    // SCENE 3: Procrastination Diagnostic
+    function initDiagnostic() {
+      const body = document.getElementById('diagBody');
+      const progress = document.getElementById('diagProgress');
+      const firstLine = body.querySelector('.diag-line');
+      firstLine.classList.add('visible');
 
-    let flippedCount = 0;
+      function bar(filled, total, type) {
+        let html = '<span class="diag-bar-container">';
+        for (let i = 0; i < total; i++) {
+          html += '<span class="diag-bar-block' + (i < filled ? ' filled ' + type : '') + '"></span>';
+        }
+        html += '</span>';
+        return html;
+      }
 
-    function initMemory() {
-      const container = document.getElementById('memoryCards');
-      container.innerHTML = '';
-      flippedCount = 0;
-      document.getElementById('memoryCounter').textContent = '0 / 6 revealed';
-      document.getElementById('memoryNext').style.display = 'none';
+      function status(label, type) {
+        return '<span class="diag-status ' + type + '">' + label + '</span>';
+      }
 
-      memoryData.forEach((item, i) => {
-        const card = document.createElement('div');
-        card.className = 'memory-card';
-        card.innerHTML = `
-          <div class="card-front">${item.front}</div>
-          <div class="card-back">${item.back}</div>
+      const scanLines = [
+        { delay: 600,  html: '<span class="comment"># Initializing procrastination analysis engine...</span>' },
+        { delay: 1200, html: '<span class="comment"># Scanning commit history, browser tabs, and excuses...</span>' },
+        { delay: 2000, html: '<span class="output">&nbsp;</span>' },
+        { delay: 2400, html: '<span class="keyword">SCAN RESULTS</span> <span class="comment">// subject: reji</span>' },
+        { delay: 2600, html: '<span class="output">------------------------------------------</span>' },
+        { delay: 3200, html: '<span class="output">Side projects started ......... 47</span>' },
+        { delay: 3700, html: '<span class="output">Side projects finished ........ 0</span>' + status('CRITICAL', 'critical') },
+        { delay: 4300, html: '<span class="output">README files that say TODO .... 34</span>' + status('ALARMING', 'warn') },
+        { delay: 4900, html: '<span class="output">Days since last personal commit  217</span>' + status('COLD', 'critical') },
+        { delay: 5500, html: '<span class="output">&nbsp;</span>' },
+        { delay: 5800, html: '<span class="keyword">MODULE ANALYSIS</span>' },
+        { delay: 6300, html: '<span class="output">Motivation module ........</span>' + bar(1, 10, 'critical') + status('NOT FOUND', 'critical') },
+        { delay: 6900, html: '<span class="output">Distraction resistance ...</span>' + bar(2, 10, 'critical') + status('FAILING', 'critical') },
+        { delay: 7500, html: '<span class="output">Architecture debate skill </span>' + bar(10, 10, 'good') + status('MAXED', 'good') },
+        { delay: 8100, html: '<span class="output">Ability to scope creep ...</span>' + bar(10, 10, 'warn') + status('INFINITE', 'warn') },
+        { delay: 8700, html: '<span class="output">Follow-through index .....</span>' + bar(0, 10, 'critical') + status('NULL', 'critical') },
+        { delay: 9300, html: '<span class="output">&nbsp;</span>' },
+        { delay: 9600, html: '<span class="keyword">TIMELINE RECONSTRUCTION</span>' },
+        { delay: 10100, html: '<span class="string">  Friday 11 PM:</span> <span class="output">"This is THE idea. This changes everything."</span>' },
+        { delay: 10600, html: '<span class="string">  Friday 11:45 PM:</span> <span class="output">git init, perfect folder structure, zero code</span>' },
+        { delay: 11100, html: '<span class="string">  Saturday 1 AM:</span> <span class="output">Researching "best state management 2026"</span>' },
+        { delay: 11600, html: '<span class="string">  Saturday 2 AM:</span> <span class="output">Refactoring the config file for the 4th time</span>' },
+        { delay: 12100, html: '<span class="string">  Sunday:</span> <span class="output">Opens Netflix. Project never mentioned again.</span>' },
+        { delay: 12600, html: '<span class="output">&nbsp;</span>' },
+        { delay: 13000, html: '<span class="comment"># DIAGNOSIS: Terminal procrastination.</span>' },
+        { delay: 13500, html: '<span class="comment"># PRESCRIPTION: An AI that does not judge and never sleeps.</span>' },
+        { delay: 14000, html: '<span class="comment"># Run the command below to accept your cure.</span>' },
+        { delay: 14400, html: '<span class="output">&nbsp;</span>' },
+      ];
+
+      const totalDuration = 14400;
+      let lineIndex = 0;
+
+      scanLines.forEach((item, i) => {
+        setTimeout(() => {
+          const line = document.createElement('div');
+          line.className = 'diag-line visible';
+          line.innerHTML = item.html;
+          const progressBar = body.querySelector('.diag-progress');
+          body.insertBefore(line, progressBar);
+          body.scrollTop = body.scrollHeight;
+          progress.style.width = Math.min(100, ((item.delay / totalDuration) * 100)) + '%';
+        }, item.delay);
+      });
+
+      setTimeout(() => {
+        progress.style.width = '100%';
+
+        const inputArea = document.createElement('div');
+        inputArea.className = 'riddle-input-area';
+        inputArea.innerHTML = `
+          <div class="riddle-input-row">
+            <span class="prompt">$</span>
+            <input type="text" class="riddle-input" id="diagInput" placeholder="sudo ship-it" autocomplete="off" />
+            <span class="cursor-blink"></span>
+          </div>
+          <div class="hint-text" id="diagHint"></div>
         `;
-        card.addEventListener('click', () => {
-          if (!card.classList.contains('flipped')) {
-            card.classList.add('flipped');
-            flippedCount++;
-            document.getElementById('memoryCounter').textContent = flippedCount + ' / 6 revealed';
-            if (flippedCount === 6) {
-              document.getElementById('memoryNext').style.display = 'inline-flex';
-              document.getElementById('memoryNext').style.animation = 'popIn 0.5s ease-out';
+        const progressBar = body.querySelector('.diag-progress');
+        body.insertBefore(inputArea, progressBar.nextSibling);
+
+        const diagInput = document.getElementById('diagInput');
+        diagInput.focus();
+        let diagAttempts = 0;
+
+        diagInput.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter') {
+            const ans = this.value.trim().toLowerCase().replace(/[-_\s]+/g, '');
+            const hint = document.getElementById('diagHint');
+            if (ans === 'sudoshipit' || ans === 'shipit') {
+              hint.style.color = '#a8db8f';
+              hint.textContent = '> Prescription accepted. Deploying birthday surprise...';
+              setTimeout(() => goToScene(4), 1200);
+            } else {
+              diagAttempts++;
+              const hints = [
+                '> Command not found. The scan told you what to run.',
+                '> Still procrastinating on typing the right command?',
+                '> Hint: sudo + the thing you never do with your projects.',
+                '> It is literally in the placeholder text.'
+              ];
+              hint.style.color = 'var(--claude-orange)';
+              hint.textContent = hints[Math.min(diagAttempts - 1, hints.length - 1)];
+              this.value = '';
             }
           }
         });
-        container.appendChild(card);
-      });
+      }, totalDuration + 600);
     }
 
     // SCENE 4: Confetti
